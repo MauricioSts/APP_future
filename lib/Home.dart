@@ -49,7 +49,24 @@ class _HomeState extends State<Home> {
 
   _put() {}
 
-  _patch() {}
+  _patch() async {
+    var corpo = json.encode({
+      "userId": 120,
+      "id": null,
+      "title": "Titulo",
+      "body": "Corpo da postagem",
+    });
+
+    Uri url = Uri.parse("$_urlBase/posts/2"); // Correção da URL
+    http.Response response = await http.patch(
+      url,
+      headers: {"Content-type": "application/json; charset=UTF-8"},
+      body: corpo,
+    );
+
+    print("PATCH resposta: ${response.statusCode}");
+    print("PATCH resposta: ${response.body}");
+  }
 
   _delete() {}
 
@@ -64,7 +81,7 @@ class _HomeState extends State<Home> {
             Row(
               children: <Widget>[
                 ElevatedButton(child: Text("Salvar"), onPressed: _post),
-                ElevatedButton(child: Text("Atualizar"), onPressed: _post),
+                ElevatedButton(child: Text("Atualizar"), onPressed: _patch),
                 ElevatedButton(child: Text("Remover"), onPressed: _post),
               ],
             ),
