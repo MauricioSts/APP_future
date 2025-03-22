@@ -47,15 +47,9 @@ class _HomeState extends State<Home> {
     print("resposta: ${response.body}");
   }
 
-  _put() {}
-
-  _patch() async {
-    var corpo = json.encode({
-      "userId": 120,
-      "id": null,
-      "title": "Titulo",
-      "body": "Corpo da postagem",
-    });
+  _put() async {
+    Post post = new Post(120, 1, "titulo", "corpo da postagem");
+    var corpo = json.encode(post.toJson());
 
     Uri url = Uri.parse("$_urlBase/posts/2"); // Correção da URL
     http.Response response = await http.patch(
@@ -68,7 +62,28 @@ class _HomeState extends State<Home> {
     print("PATCH resposta: ${response.body}");
   }
 
-  _delete() {}
+  _patch() async {
+    Post post = new Post(120, 1, "titulo", "corpo da postagem");
+    var corpo = json.encode(post.toJson());
+
+    Uri url = Uri.parse("$_urlBase/posts/2"); // Correção da URL
+    http.Response response = await http.patch(
+      url,
+      headers: {"Content-type": "application/json; charset=UTF-8"},
+      body: corpo,
+    );
+
+    print("PATCH resposta: ${response.statusCode}");
+    print("PATCH resposta: ${response.body}");
+  }
+
+  _delete() async {
+    Uri url = Uri.parse("$_urlBase/posts/2"); // Correção da URL
+    http.Response response = await http.delete(url);
+
+    print("Delete resposta: ${response.statusCode}");
+    print("Delete resposta: ${response.body}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +97,7 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 ElevatedButton(child: Text("Salvar"), onPressed: _post),
                 ElevatedButton(child: Text("Atualizar"), onPressed: _patch),
-                ElevatedButton(child: Text("Remover"), onPressed: _post),
+                ElevatedButton(child: Text("Remover"), onPressed: _delete),
               ],
             ),
             Expanded(
